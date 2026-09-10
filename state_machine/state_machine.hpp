@@ -14,6 +14,7 @@
 #include "idle_state.hpp"
 #include "standup_state.hpp"
 #include "joint_damping_state.hpp"
+#include "liedown_state.hpp"
 
 // #ifdef USE_ONNX
 //     #include "rl_control_state_onnx.hpp"
@@ -50,6 +51,7 @@ private:
     std::shared_ptr<StateBase> standup_controller_;
     std::shared_ptr<StateBase> rl_controller_;
     std::shared_ptr<StateBase> joint_damping_controller_;
+    std::shared_ptr<StateBase> liedown_controller_;
 
     StateName current_state_name_, next_state_name_;
 
@@ -105,6 +107,9 @@ private:
             }
             case StateName::kJointDamping:{
                 return joint_damping_controller_;
+            }
+            case StateName::kLieDown:{
+                return liedown_controller_;
             }
             default:{
                 std::cerr << "error state name" << std::endl;
@@ -176,6 +181,7 @@ public:
 
 
         joint_damping_controller_ = std::make_shared<JointDampingState>(robot_type, "joint_damping", data_ptr);
+        liedown_controller_ = std::make_shared<LieDownState>(robot_type, "liedown_state", data_ptr);
 
         current_controller_ = idle_controller_;
         current_state_name_ = kIdle;

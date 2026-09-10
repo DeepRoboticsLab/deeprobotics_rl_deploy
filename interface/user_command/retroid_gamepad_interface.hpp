@@ -87,6 +87,13 @@ void RetroidGamepadInterface::TransformRetroidToUserCommand(){
             case RobotMotionState::StandingUp:
                 if(rt_keys_.A != rt_keys_record_.A){
                     usr_cmd_.target_mode = int(RobotMotionState::RLControlMode);
+                }else if(rt_keys_.X != rt_keys_record_.X){
+                    usr_cmd_.target_mode = int(RobotMotionState::LieDown);
+                }
+                break;
+            case RobotMotionState::RLControlMode:
+                if(rt_keys_.X != rt_keys_record_.X){
+                    usr_cmd_.target_mode = int(RobotMotionState::LieDown);
                 }
                 break;
             
@@ -101,5 +108,4 @@ void RetroidGamepadInterface::TransformRetroidToUserCommand(){
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
-
 

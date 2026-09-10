@@ -75,6 +75,13 @@ class MuJoCoSimulation:
         self.viewer = None
         if USE_VIEWER:
             self.viewer = mujoco.viewer.launch_passive(self.model, self.data)
+            self._set_viewer_camera()
+
+    def _set_viewer_camera(self):
+        self.viewer.cam.distance = 3.8
+        self.viewer.cam.azimuth = 135
+        self.viewer.cam.elevation = -18
+        self.viewer.cam.lookat[:] = np.array([0.4, 0.0, 0.45])
 
     def _set_initial_pose(self, key: str):
         """Set joint positions to match PyBullet initial angles."""

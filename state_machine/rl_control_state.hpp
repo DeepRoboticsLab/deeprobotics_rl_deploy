@@ -125,7 +125,7 @@ public:
     }
 
     virtual StateName GetNextStateName() {
+        if(uc_ptr_->GetUserCommand().target_mode == int(RobotMotionState::LieDown)) return StateName::kLieDown;
         return StateName::kRLControl;
     }
 };
-

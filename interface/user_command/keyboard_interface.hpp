@@ -97,9 +97,14 @@ public:
                     case RobotMotionState::StandingUp:
                         if(input=='c'){
                             usr_cmd_.target_mode = int(RobotMotionState::RLControlMode);
+                        }else if(input=='x' || input=='X'){
+                            usr_cmd_.target_mode = int(RobotMotionState::LieDown);
                         }
                     break;
                     case RobotMotionState::RLControlMode:
+                        if(input=='x' || input=='X'){
+                            usr_cmd_.target_mode = int(RobotMotionState::LieDown);
+                        }
                         if(input=='w') {
                             usr_cmd_.forward_vel_scale+=AXIS_STEP;
                             forward_time_record = current_time;
@@ -146,5 +151,4 @@ public:
     }
 
 };
-
 
