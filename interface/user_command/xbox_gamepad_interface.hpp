@@ -46,6 +46,7 @@ private:
         bool lb_pressed = false;
         bool rb_pressed = false;
         bool lt_pressed = false;
+        bool x_pressed = false;
     } gp_state_;
     
     bool connection_mode_detected_ = false;
@@ -166,6 +167,7 @@ public:
         bool lb_prev = false;
         bool rb_prev = false;
         bool lt_prev = false;
+        bool x_prev = false;
 
         std::cout << "Start Gamepad Listening" << std::endl;
         
@@ -228,6 +230,7 @@ public:
                                 case 1: // B
                                     break;
                                 case 3: // X
+                                    gp_state_.x_pressed = (js_ev.value != 0);
                                     break;
                                 case 4: // Y
                                     break;
@@ -249,6 +252,7 @@ public:
                                 case 1: // B
                                     break;
                                 case 2: // X
+                                    gp_state_.x_pressed = (js_ev.value != 0);
                                     break;
                                 case 3: // Y
                                     break;
@@ -282,6 +286,9 @@ public:
                     if(gp_state_.rb_pressed && !rb_prev){
                         usr_cmd_.target_mode = int(RobotMotionState::RLControlMode);
                         std::cout << "[Gamepad] RB pressed -> RLControlMode" << std::endl;
+                    }else if(gp_state_.x_pressed && !x_prev){
+                        usr_cmd_.target_mode = int(RobotMotionState::LieDown);
+                        std::cout << "[Gamepad] X pressed -> LieDown" << std::endl;
                     }
                     break;
                     
@@ -289,6 +296,9 @@ public:
                     if(gp_state_.lt_pressed && !lt_prev){
                         usr_cmd_.target_mode = int(RobotMotionState::JointDamping);
                         std::cout << "[Gamepad] LT pressed -> JointDamping" << std::endl;
+                    }else if(gp_state_.x_pressed && !x_prev){
+                        usr_cmd_.target_mode = int(RobotMotionState::LieDown);
+                        std::cout << "[Gamepad] X pressed -> LieDown" << std::endl;
                     }
                     
                     double current_time = GetCurrentTimeStamp();
@@ -329,6 +339,7 @@ public:
             lb_prev = gp_state_.lb_pressed;
             rb_prev = gp_state_.rb_pressed;
             lt_prev = gp_state_.lt_pressed;
+            x_prev = gp_state_.x_pressed;
         }
         
         std::cout << "Gamepad thread stopped" << std::endl;
